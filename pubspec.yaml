@@ -1,0 +1,20 @@
+name: dbf_reader
+description: A DBF (dBase) reader written in dart.
+version: 0.0.1
+repository: https://github.com/B0ny.git/dbf_reader.git
+
+platforms:
+  linux:
+  macos:
+  windows:
+
+environment:
+  sdk: '>=2.18.5 <3.0.0'
+
+dependencies:
+  test: ^1.22.1
+
+publish_to: none
+
+funding:
+  - https://www.buymeacoffee.com/b0nyV
