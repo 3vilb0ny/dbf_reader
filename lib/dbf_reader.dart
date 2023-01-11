@@ -21,10 +21,11 @@ class DBF {
     if (!File(fileName).existsSync()) {
       throw FileNotFoundException();
     }
-    Iterable<String> bytes = _readBytes(end: 256);
-    _headerByteSize = intParse(lsbHexFromByteArray(bytes, 8, 10));
-    _recordByteSize = intParse(lsbHexFromByteArray(bytes, 10, 12));
-    _header = Header(bytes: bytes.skip(32).take(_headerByteSize - 32));
+    Iterable<String> bytes =
+        _readBytes().takeWhile((value) => value.toLowerCase() != "0d");
+    _headerByteSize = intParse(lsbHexFromByteArray(bytes, start: 8, end: 10));
+    _recordByteSize = intParse(lsbHexFromByteArray(bytes, start: 10, end: 12));
+    _header = Header(bytes: bytes.skip(32));
   }
 
   int get version {
@@ -32,11 +33,11 @@ class DBF {
   }
 
   String get lastUpdated {
-    return _readBytes(end: 4).skip(1).take(3).map((e) => intParse(e)).join("-");
+    return _readBytes(end: 4).skip(1).map((e) => intParse(e)).join("-");
   }
 
   int get totalRecords {
-    return intParse(lsbHexFromByteArray(_readBytes(end: 9), 4, 8));
+    return intParse(lsbHexFromByteArray(_readBytes(start: 4, end: 8)));
   }
 
   List<Row> get rowsSync {
@@ -63,17 +64,33 @@ class DBF {
   }
 
   Stream<Row> getRowsAsync() async* {
+    Iterable<String> complete = [];
+    bool firstTime = true;
     await for (Iterable<String> lines in asyncRead()) {
-      Iterable<String> restLines = lines.skip(_headerByteSize);
-      for (int i = 0, l = restLines.length;
+      if (firstTime) {
+        Iterable<String> restLines = lines.skip(_headerByteSize);
+        complete = restLines;
+        firstTime = false;
+      } else {
+        complete = [...complete, ...lines];
+      }
+
+      for (int i = 0, l = complete.length;
           i + _recordByteSize < l;
           i += _recordByteSize) {
+        Iterable<String> aux = complete.take(_recordByteSize);
+        if (aux.length < _recordByteSize) {
+          complete = aux;
+          continue;
+        }
+
         yield Row(
           cells: _extractRow(
-            restLines.skip(i).take(_recordByteSize).toList(),
+            aux.toList(),
             _header,
           ),
         );
+        complete = complete.skip(_recordByteSize);
       }
     }
   }

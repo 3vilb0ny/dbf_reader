@@ -15,6 +15,7 @@ String fromCharCodes(String hex) {
   return s.trim();
 }
 
-String lsbHexFromByteArray(Iterable<String> bytes, int start, int end) {
+String lsbHexFromByteArray(Iterable<String> bytes, {int start = 0, int? end}) {
+  end ??= bytes.length - 1;
   return bytes.skip(start).take(end - start).toList().reversed.join();
 }
