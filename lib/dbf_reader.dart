@@ -1,7 +1,9 @@
 library dbf_reader;
 
+import 'dart:async';
 import 'dart:io';
 
+import 'package:dbf_reader/src/Exceptions/file_not_found_exception.dart';
 import 'package:dbf_reader/src/cell_structure.dart';
 import 'package:dbf_reader/src/data_packet.dart';
 import 'package:dbf_reader/src/header.dart';
@@ -11,49 +13,69 @@ import 'package:dbf_reader/src/utils.dart';
 class DBF {
   final String fileName;
 
-  late final List<String> _bytes;
   late final Header _header;
-  late final List<Row> _rows;
+  late final int _headerByteSize;
+  late final int _recordByteSize;
 
   DBF({required this.fileName}) {
-    File f = File(fileName);
-    _bytes = f
-        .readAsBytesSync()
-        .map((e) => e.toRadixString(16).padLeft(2, "0"))
-        .toList();
-    int headerByteSize = intParse(lsbHexFromByteArray(_bytes, 8, 10));
-    int recordByteSize = intParse(lsbHexFromByteArray(_bytes, 10, 12));
-
-    _header = Header(bytes: _bytes.getRange(32, headerByteSize).toList());
-
-    List<Row> r = [];
-    List<String> binaryRows =
-        _bytes.getRange(headerByteSize, _bytes.length).toList();
-
-    for (int i = 0, l = binaryRows.length;
-        i + recordByteSize < l;
-        i += recordByteSize) {
-      r.add(Row(
-          cells: _extractRow(
-              binaryRows.getRange(i, i + recordByteSize).toList(), _header)));
+    if (!File(fileName).existsSync()) {
+      throw FileNotFoundException();
     }
-    _rows = r;
+    Iterable<String> bytes = _readBytes(end: 256);
+    _headerByteSize = intParse(lsbHexFromByteArray(bytes, 8, 10));
+    _recordByteSize = intParse(lsbHexFromByteArray(bytes, 10, 12));
+    _header = Header(bytes: bytes.skip(32).take(_headerByteSize - 32));
   }
 
   int get version {
-    return intParse(_bytes[0]);
+    return intParse(_readBytes(end: 1).elementAt(0));
   }
 
   String get lastUpdated {
-    return _bytes.getRange(1, 4).map((e) => intParse(e)).join("-");
+    return _readBytes(end: 4).skip(1).take(3).map((e) => intParse(e)).join("-");
   }
 
   int get totalRecords {
-    return intParse(lsbHexFromByteArray(_bytes, 4, 8));
+    return intParse(lsbHexFromByteArray(_readBytes(end: 9), 4, 8));
   }
 
-  void showStructre() {
-    this._header.showStructure();
+  List<Row> get rowsSync {
+    List<Row> r = [];
+    Iterable<String> binaryRows = _readBytes(start: _headerByteSize);
+
+    for (int i = 0, l = binaryRows.length;
+        i + _recordByteSize < l;
+        i += _recordByteSize) {
+      r.add(Row(
+          cells: _extractRow(
+              binaryRows.skip(i).take(_recordByteSize).toList(), _header)));
+    }
+    return r;
+  }
+
+  Header get header => _header;
+
+  Stream<Iterable<String>> asyncRead() {
+    File f = File(fileName);
+    return f
+        .openRead()
+        .map((event) => event.map((e) => e.toRadixString(16).padLeft(2, "0")));
+  }
+
+  Stream<Row> getRowsAsync() async* {
+    await for (Iterable<String> lines in asyncRead()) {
+      Iterable<String> restLines = lines.skip(_headerByteSize);
+      for (int i = 0, l = restLines.length;
+          i + _recordByteSize < l;
+          i += _recordByteSize) {
+        yield Row(
+          cells: _extractRow(
+            restLines.skip(i).take(_recordByteSize).toList(),
+            _header,
+          ),
+        );
+      }
+    }
   }
 
   List<Row> select({
@@ -61,7 +83,7 @@ class DBF {
     bool Function(Row)? condition,
   }) {
     List<Row> rows = [];
-    for (Row row in _rows) {
+    for (Row row in rowsSync) {
       if (condition == null || condition(row)) {
         List<DataPacket> selectedCells = [];
         for (int columnIndex = 0,
@@ -78,6 +100,10 @@ class DBF {
     return rows;
   }
 
+  void showStructre() {
+    _header.showStructure();
+  }
+
   List<DataPacket> _extractRow(List<String> bytes, Header header) {
     List<DataPacket> ret = [];
     int l = header.length;
@@ -90,5 +116,16 @@ class DBF {
       offset = endOffset;
     }
     return ret;
+  }
+
+  Iterable<String> _readBytes({
+    int start = 0,
+    int end = 0,
+  }) {
+    File f = File(fileName);
+    Iterable<int> s = f.readAsBytesSync();
+    if (end > start) s = s.skip(start).take(end - start);
+    if (end < start) s = s.skip(start);
+    return s.map((e) => e.toRadixString(16).padLeft(2, "0"));
   }
 }

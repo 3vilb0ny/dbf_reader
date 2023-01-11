@@ -7,8 +7,8 @@ class Row {
     required List<DataPacket> cells,
   }) : _cells = cells;
 
-  get length => _cells.length;
-  get cells => _cells;
+  int get length => _cells.length;
+  List<DataPacket> get cells => _cells;
 
   DataPacket get(int index) {
     return _cells[index];

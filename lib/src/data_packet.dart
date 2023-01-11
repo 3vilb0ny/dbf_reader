@@ -12,7 +12,7 @@ class DataPacket {
   }
 
   double getDouble() {
-    return double.parse(value.toString());
+    return value.toString().isEmpty ? 0.0 : double.parse(value.toString());
   }
 
   DateTime getDateTime() {

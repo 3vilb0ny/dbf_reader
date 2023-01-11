@@ -33,4 +33,11 @@ void main() {
     List<Row> rows = dbf.select(condition: (Row r) => r.get(0).value != "");
     expect(rows, isNotEmpty);
   });
+
+  test(
+    'Async read',
+    () async {
+      expect(await dbf.getRowsAsync().length, isNonZero);
+    },
+  );
 }

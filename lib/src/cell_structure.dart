@@ -3,12 +3,14 @@ class CellStructure {
   final String dataType;
   final int length;
   final int decimalPlaces;
+  final int position;
 
   CellStructure({
     required this.name,
     required this.dataType,
     required this.length,
     required this.decimalPlaces,
+    required this.position,
   });
 
   @override
@@ -19,6 +21,7 @@ class CellStructure {
       Data Type:\t$dataType (${_translateDataType()})
       Column Lenght:\t$length
       Decimal Places:\t$decimalPlaces
+      Position:\t$position
     }
     """;
   }
