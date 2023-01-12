@@ -3,7 +3,6 @@ library dbf_reader;
 import 'dart:async';
 import 'dart:io';
 
-import 'package:dbf_reader/src/Exceptions/file_not_found_exception.dart';
 import 'package:dbf_reader/src/cell_structure.dart';
 import 'package:dbf_reader/src/data_packet.dart';
 import 'package:dbf_reader/src/header.dart';
@@ -18,14 +17,12 @@ class DBF {
   late final int _recordByteSize;
 
   DBF({required this.fileName}) {
-    if (!File(fileName).existsSync()) {
-      throw FileNotFoundException();
-    }
-    Iterable<String> bytes =
-        _readBytes().takeWhile((value) => value.toLowerCase() != "0d");
+    // First 32 bytes, content description
+    Iterable<String> bytes = _readBytes(end: 32);
     _headerByteSize = intParse(lsbHexFromByteArray(bytes, start: 8, end: 10));
     _recordByteSize = intParse(lsbHexFromByteArray(bytes, start: 10, end: 12));
-    _header = Header(bytes: bytes.skip(32));
+    // From 32 to header size, field descriptors
+    _header = Header(bytes: _readBytes(start: 32, end: _headerByteSize));
   }
 
   int get version {
