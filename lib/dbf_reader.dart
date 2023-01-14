@@ -1,3 +1,4 @@
+/// DBF Library
 library dbf_reader;
 
 import 'dart:async';
@@ -9,6 +10,7 @@ import 'package:dbf_reader/src/header.dart';
 import 'package:dbf_reader/src/row.dart';
 import 'package:dbf_reader/src/utils.dart';
 
+/// Main class where all data of dbf file is loaded
 class DBF {
   final String fileName;
 

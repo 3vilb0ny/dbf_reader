@@ -27,21 +27,19 @@ class CellStructure {
   }
 
   String _translateDataType() {
-    /**
-     * https://www.dbase.com/Knowledgebase/INT/db7_file_fmt.htm
-     * 
-     * C	Character, padded with spaces if shorter than the field length
-     * D	Date stored as string in YYYYMMDD format
-     * F	Floating point number, stored as string, padded with spaces if shorter than the field length
-     * N	Floating point number, stored as string, padded with spaces if shorter than the field length
-     * L	Boolean value, stored as one of YyNnTtFf. May be set to ? if not initialized
-     * M  Memo, a string - 10 digits (bytes) representing a .DBT block number. The number is stored as a string, right justified and padded with blanks
-     * @  Timestamp - The date is the number of days since  01/01/4713 BC. Time is hours * 3600000L + minutes * 60000L + Seconds * 1000L
-     * l  Long
-     * +  Long autoincrement
-     * O  Double
-     * G  OLE
-     */
+    /// https://www.dbase.com/Knowledgebase/INT/db7_file_fmt.htm
+    /// C	Character, padded with spaces if shorter than the field length
+    /// D	Date stored as string in YYYYMMDD format
+    /// F	Floating point number, stored as string, padded with spaces if shorter than the field length
+    /// N	Floating point number, stored as string, padded with spaces if shorter than the field length
+    /// L	Boolean value, stored as one of YyNnTtFf. May be set to ? if not initialized
+    /// M  Memo, a string - 10 digits (bytes) representing a .DBT block number. The number is stored as a string, right justified and padded with blanks
+    /// @  Timestamp - The date is the number of days since  01/01/4713 BC. Time is hours * 3600000L + minutes * 60000L + Seconds * 1000L
+    /// l  Long
+    /// +  Long autoincrement
+    /// O  Double
+    /// G  OLE
+
     switch (dataType) {
       case "C":
         return "Char";

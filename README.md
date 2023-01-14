@@ -1,5 +1,5 @@
 
-This is a package to read DBF files (dBase) and retrieves data into memory lists.
+This is a package to read DBF files (dBase) and retrieves data into memory lists or streams.
 
 
 ## Features

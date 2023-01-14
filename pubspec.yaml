@@ -14,7 +14,7 @@ environment:
 dependencies:
   test: ^1.22.1
 
-publish_to: none
+publish_to: https://pub.dev/
 
 funding:
   - https://www.buymeacoffee.com/b0nyV
