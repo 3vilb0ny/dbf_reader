@@ -62,6 +62,7 @@ final dbf = DBF(fileName: "./file.dbf");
 List<Row> rows = dbf.select(condition: (Row r) => r.get(0).value != "");
 ```
 
+Get all records using stream version
 ```dart
 final dbf = DBF(fileName: "./file.dbf");
 // Stream data example;
