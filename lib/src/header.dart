@@ -13,7 +13,10 @@ class Header {
 
     int position = 0;
     for (int i = 0, l = _bytes.length; i + offset < l; i += offset) {
-      String name = _bytes.skip(i).take(11).map((e) => fromCharCode(e)).join();
+      String name = _bytes.skip(i).take(11).map((e) => fromCharCode(e)).join().trim();
+      if (name.isEmpty) {
+        continue;
+      }
       String dataType = fromCharCode(_bytes.elementAt(i + 11));
       int length = intParse(_bytes.elementAt(i + 16));
       int decimalCount = intParse(_bytes.elementAt(i + 17));
