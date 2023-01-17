@@ -10,6 +10,12 @@ import 'package:dbf_reader/src/header.dart';
 import 'package:dbf_reader/src/row.dart';
 import 'package:dbf_reader/src/utils.dart';
 
+export 'src/Exceptions/file_not_found_exception.dart';
+export 'src/cell_structure.dart';
+export 'src/data_packet.dart';
+export 'src/header.dart';
+export 'src/row.dart';
+
 /// Main class where all data of dbf file is loaded
 class DBF {
   final String fileName;
