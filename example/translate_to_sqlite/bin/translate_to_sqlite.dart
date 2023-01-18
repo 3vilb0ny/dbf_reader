@@ -1,6 +1,6 @@
 import 'package:translate_to_sqlite/dbf_to_sql.dart';
 
-void main(List<String> arguments) async {
+Future<void> main(List<String> arguments) async {
   String dbNameGroups = './Tcambio.dbf';
 
   TableMapper groupMapper = TableMapper(
