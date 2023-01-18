@@ -1,4 +1,3 @@
-import 'package:dotenv/dotenv.dart';
 import 'package:sqlite3/sqlite3.dart';
 
 class DBConnection {
@@ -7,9 +6,7 @@ class DBConnection {
   late final Database db;
 
   DBConnection() {
-    DotEnv env = DotEnv(includePlatformEnvironment: true)..load();
-
-    db = sqlite3.open(env["DB_NAME"]!);
+    db = sqlite3.open("example.sqlite");
   }
 
   static Database get instance {

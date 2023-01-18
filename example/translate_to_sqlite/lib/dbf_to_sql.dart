@@ -47,7 +47,7 @@ extension CellStructureSQL on CellStructure {
 extension DataPacketSQL on DataPacket {
   dynamic getAsSQLValue(String dataType) {
     String v = getString().replaceAll("\"", "").replaceAll("'", "");
-   
+
     switch (dataType) {
       case "C":
         return v.isEmpty ? "NULL" : "\"$v\"";
@@ -74,7 +74,6 @@ extension DataPacketSQL on DataPacket {
       default:
         return v.isEmpty ? "NULL" : "\"$v\"";
     }
-  
   }
 }
 
@@ -123,36 +122,70 @@ class DBFtoSQL extends DBF {
   Future<DBFtoSQL> insertInto() async {
     DBConnection.instance.execute("DELETE FROM `${getTableName()}`;");
 
-    String baseQuery =
-        "INSERT INTO `${getTableName()}` (${(_tableMapper == null || _tableMapper?.columnMapper == null ? header.getStructure().map((c) => "`${c.name}`") : _tableMapper!.columnMapper!.values.map(
-            (e) => "`$e`",
-          )).join(', ')}) VALUES ";
+    String baseQuery = "INSERT INTO `${getTableName()}` (";
 
-    Iterable validColumns =
+    Iterable<CellStructure> validColumns =
         (_tableMapper == null || _tableMapper?.columnMapper == null
             ? header.getStructure()
             : header.getStructure().where((CellStructure cell) =>
                 _tableMapper!.columnMapper!.keys.contains(cell.name)));
 
-    Iterable validPositions = validColumns.map((cs) => cs.position);
+    baseQuery += validColumns
+        .map((CellStructure cs) =>
+            (_tableMapper == null || _tableMapper?.columnMapper == null)
+                ? "`${cs.name}`"
+                : "`${_tableMapper!.columnMapper![cs.name]}`")
+        .join(",");
 
+    baseQuery += ") VALUES ";
+
+    Iterable<int> validPositions = validColumns.map((cs) => cs.position);
+
+    String fiftyRows = baseQuery;
+
+    int i = 0;
     await for (Row row in getRowsAsync()) {
-      String query = "$baseQuery(";
-      List<DataPacket> validColumnsInRow = row.cells
-          .where(
-              (DataPacket d) => validPositions.contains(row.cells.indexOf(d)))
-          .toList();
+      String query = "(";
+
+      List<DataPacket> validColumnsInRow = [];
+
+      for (int vp in validPositions) {
+        validColumnsInRow.add(row.cells[vp]);
+      }
+
       query += validColumnsInRow
           .map((DataPacket d) => d.getAsSQLValue(
               validColumns.elementAt(validColumnsInRow.indexOf(d)).dataType))
           .join(",");
+
       query += ")";
+      fiftyRows += query;
+
+      if (i == 50) {
+        fiftyRows += ";";
+        try {
+          DBConnection.instance.execute(fiftyRows);
+        } catch (e) {
+          log(e.toString());
+        }
+        fiftyRows = baseQuery;
+        i = 0;
+      } else {
+        fiftyRows += ",";
+      }
+      i++;
+    }
+
+    // Last rows not enought to complete fifty
+    if (fiftyRows.length != baseQuery.length) {
       try {
-        DBConnection.instance.execute(query);
+        DBConnection.instance
+            .execute("${fiftyRows.substring(0, fiftyRows.length - 1)};");
       } catch (e) {
         log(e.toString());
       }
     }
+
     return this;
   }
 }

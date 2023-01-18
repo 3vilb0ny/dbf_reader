@@ -7,7 +7,6 @@ environment:
 
 dependencies:
   sqlite3: ^1.9.1
-  dotenv: ^4.0.1
   dbf_reader:
     path: ../../
 

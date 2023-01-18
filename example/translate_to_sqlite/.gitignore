@@ -4,3 +4,8 @@
 
 # Conventional directory for build output.
 build/
+
+.env
+*.sqlite
+*.db
+*.s3db
