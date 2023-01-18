@@ -1,5 +1,4 @@
 import 'package:dbf_reader/dbf_reader.dart';
-import 'package:dbf_reader/src/row.dart';
 import 'package:test/test.dart';
 
 void main() {
