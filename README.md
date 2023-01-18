@@ -79,8 +79,8 @@ void useStream () async {
 }
 ```
 
-## Future updates
-* Translate to SQLite with table mapping
+## Example
+* Translate to SQLite with table mapping in: https://github.com/3vilb0ny/dbf_reader/tree/develop/example/translate_to_sqlite
 
 
 ## Additional information
