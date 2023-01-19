@@ -1,3 +1,7 @@
+## 0.0.5
+
+* Update README.md (fix examples of use)
+
 ## 0.0.4
 
 * Add an example: dBase translator to sqlite3
