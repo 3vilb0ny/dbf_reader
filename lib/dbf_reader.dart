@@ -1,4 +1,4 @@
-/// A library dbf_reader, it reads a dbf (dBase) file and loads the data into
+/// A library that reads a dbf (dBase) file and loads the data into
 /// memory lists, or streams the data
 library dbf_reader;
 
