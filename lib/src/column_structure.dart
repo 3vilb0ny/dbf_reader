@@ -1,11 +1,22 @@
-class CellStructure {
+/// An object which represents the structure of a dbase column
+class ColumnStructure {
+  /// The column name
   final String name;
+
+  /// The column datatype
   final String dataType;
+
+  /// The column datatype length
   final int length;
+
+  /// The column decimal places if correspond, else 0
   final int decimalPlaces;
+
+  /// The column position in the table
   final int position;
 
-  CellStructure({
+  /// The constructor
+  ColumnStructure({
     required this.name,
     required this.dataType,
     required this.length,
@@ -13,6 +24,7 @@ class CellStructure {
     required this.position,
   });
 
+  /// The string representation of this column structure
   @override
   String toString() {
     return """
@@ -26,6 +38,7 @@ class CellStructure {
     """;
   }
 
+  /// Maps the dbase datatypes to Dart datatypes
   String _translateDataType() {
     /// https://www.dbase.com/Knowledgebase/INT/db7_file_fmt.htm
     /// C	Character, padded with spaces if shorter than the field length

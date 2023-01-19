@@ -1,14 +1,20 @@
-import 'package:dbf_reader/src/cell_structure.dart';
+import 'package:dbf_reader/src/column_structure.dart';
 import 'package:dbf_reader/src/utils.dart';
 
+/// A representation of the first binary part of the dbase file,
+/// it contains the column structure, quantity of columns, etc
 class Header {
+  /// The bytes to read
   final Iterable<String> _bytes;
-  late Iterable<CellStructure> _columns;
 
+  /// The columns
+  late Iterable<ColumnStructure> _columns;
+
+  /// The constructor creates the columns
   Header({
     required Iterable<String> bytes,
   }) : _bytes = bytes {
-    List<CellStructure> c = [];
+    List<ColumnStructure> c = [];
     int offset = 32;
 
     int position = 0;
@@ -21,7 +27,7 @@ class Header {
       String dataType = fromCharCode(_bytes.elementAt(i + 11));
       int length = intParse(_bytes.elementAt(i + 16));
       int decimalCount = intParse(_bytes.elementAt(i + 17));
-      c.add(CellStructure(
+      c.add(ColumnStructure(
         name: name,
         dataType: dataType,
         length: length,
@@ -33,19 +39,23 @@ class Header {
     _columns = c;
   }
 
+  /// Returns the [columns] length
   int get length => _columns.length;
 
-  Iterable<CellStructure> getStructure() {
+  /// Returns the columns
+  Iterable<ColumnStructure> getStructure() {
     return _columns;
   }
 
-  CellStructure get(int index) {
+  /// Return a column based on it index
+  ColumnStructure get(int index) {
     return _columns.elementAt(index);
   }
 
+  /// Prints in console the table structure
   void showStructure() {
     String s = "";
-    for (CellStructure cellStructure in _columns) {
+    for (ColumnStructure cellStructure in _columns) {
       s += "$cellStructure\n";
     }
     print(s);
