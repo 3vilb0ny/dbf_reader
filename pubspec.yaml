@@ -1,6 +1,6 @@
 name: dbf_reader
-description: A DBF (dBase) reader written in dart.
-version: 0.0.2
+description: DBF (dBase) file reader, stream data or load into memory lists.
+version: 0.0.3
 repository: https://github.com/3vilb0ny/dbf_reader/tree/main
 
 platforms:

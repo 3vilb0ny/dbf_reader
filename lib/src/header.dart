@@ -13,7 +13,8 @@ class Header {
 
     int position = 0;
     for (int i = 0, l = _bytes.length; i + offset < l; i += offset) {
-      String name = _bytes.skip(i).take(11).map((e) => fromCharCode(e)).join().trim();
+      String name =
+          _bytes.skip(i).take(11).map((e) => fromCharCode(e)).join().trim();
       if (name.isEmpty) {
         continue;
       }

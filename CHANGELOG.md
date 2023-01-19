@@ -1,3 +1,7 @@
+## 0.0.3
+
+* Change pubspec to reach highest score in pub.dev
+
 ## 0.0.2
 
 * Change repository
