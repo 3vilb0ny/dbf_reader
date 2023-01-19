@@ -39,7 +39,7 @@ class Header {
     _columns = c;
   }
 
-  /// Returns the [columns] length
+  /// Returns the columns length
   int get length => _columns.length;
 
   /// Returns the columns
