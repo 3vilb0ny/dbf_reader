@@ -3,17 +3,24 @@ import 'dart:developer';
 import 'package:dbf_reader/dbf_reader.dart';
 import 'package:translate_to_sqlite/db_connection.dart';
 
+/// Mapper for the dBase table to SQLite3 table
 class TableMapper {
+  /// The column name
   final String? tableName;
+
+  /// The column map
   final Map<String, String>? columnMapper;
 
+  /// The constuctor
   TableMapper({
     this.tableName,
     this.columnMapper,
   });
 }
 
+/// Extension for the [ColumnStructure]
 extension CellStructureSQL on ColumnStructure {
+  /// Map the dBase column datatypes to SQLite3/MySQL datatypes
   String translateDataTypeSQL() {
     switch (dataType) {
       case "C":
@@ -44,7 +51,9 @@ extension CellStructureSQL on ColumnStructure {
   }
 }
 
+/// An extension to [DataPacket]
 extension DataPacketSQL on DataPacket {
+  /// Returns the [DataPacket] value in the correspond datatype
   dynamic getAsSQLValue(String dataType) {
     String v = getString().replaceAll("\"", "").replaceAll("'", "");
 
@@ -77,13 +86,17 @@ extension DataPacketSQL on DataPacket {
   }
 }
 
+/// A transaltor from DBF to SQLite3
 class DBFtoSQL extends DBF {
+  /// The table mapper
   final TableMapper? _tableMapper;
 
+  /// The constuctor
   DBFtoSQL({required String fileName, TableMapper? tableMapper})
       : _tableMapper = tableMapper,
         super(fileName: fileName);
 
+  /// Returns the table name based on the table mapper or the file name
   String getTableName() {
     String tableName = _tableMapper == null ||
             _tableMapper?.tableName == null ||
@@ -94,6 +107,8 @@ class DBFtoSQL extends DBF {
     return tableName.trim().toUpperCase().replaceAll(" ", "_");
   }
 
+  /// Creates the SQL and execute it over the [DBConnection]
+  /// Returns [this] to chain methods
   DBFtoSQL createTable() {
     String query = "CREATE TABLE IF NOT EXISTS ";
     query += "`${getTableName()}` (`id` INTEGER PRIMARY KEY";
@@ -119,6 +134,9 @@ class DBFtoSQL extends DBF {
     return this;
   }
 
+  /// Creates the SQL and inserts the data asynchronously over the [DBConnection]
+  /// the data is stored 50 rows at time
+  /// Returns [this] as [Future] to chain methods
   Future<DBFtoSQL> insertInto() async {
     DBConnection.instance.execute("DELETE FROM `${getTableName()}`;");
 
