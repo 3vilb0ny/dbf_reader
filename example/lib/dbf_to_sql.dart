@@ -13,7 +13,7 @@ class TableMapper {
   });
 }
 
-extension CellStructureSQL on CellStructure {
+extension CellStructureSQL on ColumnStructure {
   String translateDataTypeSQL() {
     switch (dataType) {
       case "C":
@@ -98,7 +98,7 @@ class DBFtoSQL extends DBF {
     String query = "CREATE TABLE IF NOT EXISTS ";
     query += "`${getTableName()}` (`id` INTEGER PRIMARY KEY";
 
-    for (CellStructure cell in header.getStructure()) {
+    for (ColumnStructure cell in header.getStructure()) {
       if (_tableMapper == null ||
           _tableMapper?.columnMapper == null ||
           _tableMapper!.columnMapper!.isEmpty) {
@@ -124,14 +124,14 @@ class DBFtoSQL extends DBF {
 
     String baseQuery = "INSERT INTO `${getTableName()}` (";
 
-    Iterable<CellStructure> validColumns =
+    Iterable<ColumnStructure> validColumns =
         (_tableMapper == null || _tableMapper?.columnMapper == null
             ? header.getStructure()
-            : header.getStructure().where((CellStructure cell) =>
+            : header.getStructure().where((ColumnStructure cell) =>
                 _tableMapper!.columnMapper!.keys.contains(cell.name)));
 
     baseQuery += validColumns
-        .map((CellStructure cs) =>
+        .map((ColumnStructure cs) =>
             (_tableMapper == null || _tableMapper?.columnMapper == null)
                 ? "`${cs.name}`"
                 : "`${_tableMapper!.columnMapper![cs.name]}`")

@@ -8,7 +8,7 @@ environment:
 dependencies:
   sqlite3: ^1.9.1
   dbf_reader:
-    path: ../../
+    path: ../
 
 dev_dependencies:
   lints: ^2.0.0
