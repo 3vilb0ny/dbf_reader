@@ -47,11 +47,11 @@ final dbf = DBF(fileName: "./file.dbf");
 log(dbf.totalRecords);
 ```
 
-Select all records and store in a list of *`<Row>`*
+Select all records and store in a list of *`<Row>`*, take care that is an async function so it returns a future
 
 ```dart
 final dbf = DBF(fileName: "./file.dbf");
-List<Row> rows = dbf.select();
+List<Row> rows = await dbf.select();
 ```
 
 Select all records whith a condition and store in a list of *`<Row>`*
@@ -59,7 +59,7 @@ Select all records whith a condition and store in a list of *`<Row>`*
 ```dart
 final dbf = DBF(fileName: "./file.dbf");
 // This is equivalent in SQL as: SELECT * FROM TABLE WHERE first_column != "";
-List<Row> rows = dbf.select(condition: (Row r) => r.get(0).value != "");
+List<Row> rows = await dbf.select(condition: (Row r) => r.get(0).value != "");
 ```
 
 Get all records using stream version
