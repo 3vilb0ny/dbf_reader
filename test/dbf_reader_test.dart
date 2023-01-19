@@ -2,7 +2,7 @@ import 'package:dbf_reader/dbf_reader.dart';
 import 'package:test/test.dart';
 
 void main() {
-  final dbf = DBF(fileName: "./file.dbf");
+  final dbf = DBF(fileName: "./test/Tcambio.dbf");
   test('DBF version', () {
     expect(dbf.version, isNonZero);
   });
@@ -19,17 +19,18 @@ void main() {
     expect(dbf.totalRecords, isNonZero);
   });
 
-  test('Read first row seccond column', () {
-    expect(dbf.select().first.get(1).getString(), isNotNull);
+  test('Read first row seccond column', () async {
+    expect((await dbf.select()).first.get(1).getString(), isNotNull);
   });
 
-  test('SELECT * FROM', () {
-    List<Row> rows = dbf.select();
+  test('SELECT * FROM', () async {
+    List<Row> rows = await dbf.select();
     expect(rows.length, dbf.totalRecords);
   });
 
-  test('SELECT * FROM TABLE WHERE first_column != ""', () {
-    List<Row> rows = dbf.select(condition: (Row r) => r.get(0).value != "");
+  test('SELECT * FROM TABLE WHERE first_column != ""', () async {
+    List<Row> rows =
+        await dbf.select(condition: (Row r) => r.get(0).value != "");
     expect(rows, isNotEmpty);
   });
 
