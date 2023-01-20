@@ -1,3 +1,8 @@
+## 0.0.6
+
+* Fix the example url in README.md
+* Improve steps written in example/README.md to run the example
+
 ## 0.0.5
 
 * Update README.md (fix examples of use)
