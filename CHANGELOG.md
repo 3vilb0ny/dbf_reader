@@ -1,3 +1,6 @@
+## 0.0.8
+* Allow extended ascii characters
+
 ## 0.0.6
 
 * Fix the example url in README.md

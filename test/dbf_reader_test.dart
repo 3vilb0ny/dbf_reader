@@ -2,7 +2,7 @@ import 'package:dbf_reader/dbf_reader.dart';
 import 'package:test/test.dart';
 
 void main() {
-  final dbf = DBF(fileName: "./test/Tcambio.dbf");
+  final dbf = DBF(fileName: "./test/Jerarq.dbf");
   test('DBF version', () {
     expect(dbf.version, isNonZero);
   });
@@ -11,12 +11,12 @@ void main() {
     expect(dbf.lastUpdated, isNotEmpty);
   });
 
-  test('Show structure', () {
-    dbf.showStructre();
-  });
-
   test('Total records', () {
     expect(dbf.totalRecords, isNonZero);
+  });
+
+  test('Show structure', () {
+    dbf.showStructre();
   });
 
   test('Read first row seccond column', () async {
