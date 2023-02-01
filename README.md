@@ -14,42 +14,57 @@ This is a package to read DBF files (dBase) and retrieves data into memory lists
 
 ## Getting started
 
-* Install the package using pub get dbf_reader.
+* First of all you need to add the fl_chart in your project.
+* Option 1: command line
+```bash
+    pub get dbf_reader
+```
+* Option 2: Add dbf_reader in dependencies in pubspec.yaml
 
 ## Usage
 
 DBF Version
 
 ```dart
+import 'package:dbf_reader/dbf_reader.dart';
+
 final dbf = DBF(fileName: "./file.dbf");
-log(dbf.version);
+print(dbf.version.toString());
 ```
 
 
 Get last updated date
 
 ```dart
+import 'package:dbf_reader/dbf_reader.dart';
+
 final dbf = DBF(fileName: "./file.dbf");
-log(dbf.lastUpdated);
+print(dbf.lastUpdated);
 ```
 
 View structure
 
 ```dart
+import 'package:dbf_reader/dbf_reader.dart';
+
 final dbf = DBF(fileName: "./file.dbf");
-log(dbf.showStructure);
+dbf.showStructure();
 ```
 
 View total number of records
 
 ```dart
+import 'package:dbf_reader/dbf_reader.dart';
+
 final dbf = DBF(fileName: "./file.dbf");
-log(dbf.totalRecords);
+print(dbf.totalRecords.toString());
 ```
 
 Select all records and store in a list of *`<Row>`*, take care that is an async function so it returns a future
 
 ```dart
+import 'package:dbf_reader/dbf_reader.dart';
+
 final dbf = DBF(fileName: "./file.dbf");
 List<Row> rows = await dbf.select();
 ```
@@ -57,6 +72,8 @@ List<Row> rows = await dbf.select();
 Select all records whith a condition and store in a list of *`<Row>`*
 
 ```dart
+import 'package:dbf_reader/dbf_reader.dart';
+
 final dbf = DBF(fileName: "./file.dbf");
 // This is equivalent in SQL as: SELECT * FROM TABLE WHERE first_column != "";
 List<Row> rows = await dbf.select(condition: (Row r) => r.get(0).value != "");
@@ -64,6 +81,8 @@ List<Row> rows = await dbf.select(condition: (Row r) => r.get(0).value != "");
 
 Get all records using stream version
 ```dart
+import 'package:dbf_reader/dbf_reader.dart';
+
 final dbf = DBF(fileName: "./file.dbf");
 // Stream data example;
 void useStream () async {

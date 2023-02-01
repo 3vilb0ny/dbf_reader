@@ -1,3 +1,7 @@
+## 0.1.0
+* Fix issue in reading asynchronous rows, improved offset condition
+* Improved README.MD
+
 ## 0.0.7
 * Allow extended ascii characters
 
