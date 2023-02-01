@@ -2,7 +2,7 @@ import 'package:dbf_reader/dbf_reader.dart';
 import 'package:test/test.dart';
 
 void main() {
-  final dbf = DBF(fileName: "./test/Jerarq.dbf");
+  final dbf = DBF(fileName: "./test/Tcambio.dbf");
   test('DBF version', () {
     expect(dbf.version, isNonZero);
   });
