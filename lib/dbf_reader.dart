@@ -98,7 +98,7 @@ class DBF {
       }
 
       for (int i = 0, l = complete.length;
-          i + _recordByteSize < l;
+          i + _recordByteSize <= l;
           i += _recordByteSize) {
         Iterable<String> aux = complete.take(_recordByteSize);
         if (aux.length < _recordByteSize) {
