@@ -1,3 +1,6 @@
+## 0.1.1
+* Fix spellings in function names
+
 ## 0.1.0
 * Fix issue in reading asynchronous rows, improved offset condition
 * Improved README.MD

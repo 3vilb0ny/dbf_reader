@@ -8,7 +8,7 @@ int intParse(String hex) {
 /// Returns `` if is a null char with code 127 or is between 0 and 31
 /// Example: `41` -> `A`
 String fromCharCode(String hex) {
-  return mapToAcii(intParse(hex));
+  return mapToAscii(intParse(hex));
 }
 
 /// A converter from hexadecimal word in String format to ascii word
@@ -29,7 +29,7 @@ String lsbHexFromByteArray(Iterable<String> bytes, {int start = 0, int? end}) {
   return bytes.skip(start).take(end - start).toList().reversed.join();
 }
 
-String mapToAcii(int code) {
+String mapToAscii(int code) {
   switch (code) {
     case 32:
       return " ";

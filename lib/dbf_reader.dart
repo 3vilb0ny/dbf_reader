@@ -142,7 +142,7 @@ class DBF {
   }
 
   /// Prints in console the database structure
-  void showStructre() {
+  void showStructure() {
     _header.showStructure();
   }
 

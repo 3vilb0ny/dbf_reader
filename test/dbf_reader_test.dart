@@ -16,7 +16,7 @@ void main() {
   });
 
   test('Show structure', () {
-    dbf.showStructre();
+    dbf.showStructure();
   });
 
   test('Read first row seccond column', () async {
