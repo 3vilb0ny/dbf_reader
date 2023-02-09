@@ -40,4 +40,17 @@ void main() {
       expect(await dbf.getRowsAsync().length, isNonZero);
     },
   );
+
+  test('Test deleted records', () async {
+    int lenNotDeleted = 0;
+    int lenDeleted = 0;
+    await for (Row row in dbf.getRowsAsync()) {
+      if (row.isDeleted) {
+        lenDeleted++;
+      } else {
+        lenNotDeleted++;
+      }
+    }
+    expect(lenDeleted + lenNotDeleted, dbf.totalRecords);
+  });
 }

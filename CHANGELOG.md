@@ -1,3 +1,6 @@
+## 0.2.0
+* Added a property named "isDeleted" in Row class, which determines if is a deleted record or not
+
 ## 0.1.1
 * Fix spellings in function names
 

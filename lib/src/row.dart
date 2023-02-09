@@ -5,9 +5,13 @@ class Row {
   /// The cells part of the row
   final List<DataPacket> _cells;
 
+  /// The flag which determines if is a deleted record
+  final bool isDeleted;
+
   /// The constructor
   Row({
     required List<DataPacket> cells,
+    this.isDeleted = false,
   }) : _cells = cells;
 
   /// Returns the row length

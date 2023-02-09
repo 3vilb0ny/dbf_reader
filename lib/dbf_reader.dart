@@ -106,11 +106,15 @@ class DBF {
           continue;
         }
 
+        // A row starting with 0x2A is marked as deleted row
+        bool isDeleted = aux.elementAt(0).toUpperCase() == "2A";
+
         yield Row(
           cells: _extractRow(
             aux.toList(),
             _header,
           ),
+          isDeleted: isDeleted,
         );
         complete = complete.skip(_recordByteSize);
       }
@@ -154,8 +158,10 @@ class DBF {
     for (int i = 0; i < l; i++) {
       ColumnStructure cell = header.get(i);
       int endOffset = cell.length + offset;
-      ret.add(DataPacket(
-          value: fromCharCodes(bytes.getRange(offset, endOffset).join())));
+      ret.add(
+        DataPacket(
+            value: fromCharCodes(bytes.getRange(offset, endOffset).join())),
+      );
       offset = endOffset;
     }
     return ret;
