@@ -159,8 +159,7 @@ class DBF {
       ColumnStructure cell = header.get(i);
       int endOffset = cell.length + offset;
       ret.add(
-        DataPacket(
-            value: fromCharCodes(bytes.getRange(offset, endOffset).join())),
+        DataPacket(value: mapToAscii(bytes.getRange(offset, endOffset).join())),
       );
       offset = endOffset;
     }

@@ -1,3 +1,7 @@
+## 1.0.0
+* Fixed issue with characters encoding
+* Tested for a long time, so it is a stable release
+
 ## 0.2.0
 * Added a property named "isDeleted" in Row class, which determines if is a deleted record or not
 

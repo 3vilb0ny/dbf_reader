@@ -20,11 +20,11 @@ class Header {
     int position = 0;
     for (int i = 0, l = _bytes.length; i + offset < l; i += offset) {
       String name =
-          _bytes.skip(i).take(11).map((e) => fromCharCode(e)).join().trim();
+          _bytes.skip(i).take(11).map((e) => mapToAscii(e)).join().trim();
       if (name.isEmpty) {
         continue;
       }
-      String dataType = fromCharCode(_bytes.elementAt(i + 11));
+      String dataType = mapToAscii(_bytes.elementAt(i + 11));
       int length = intParse(_bytes.elementAt(i + 16));
       int decimalCount = intParse(_bytes.elementAt(i + 17));
       c.add(ColumnStructure(

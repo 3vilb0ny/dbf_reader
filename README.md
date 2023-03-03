@@ -88,12 +88,12 @@ final dbf = DBF(fileName: "./file.dbf");
 void useStream () async {
     // Using await for
     await for (Row row in dbf.getRowsAsync()) {
-        print(row.toString());
+        print(row.toString() + "\n")
     }
 
     // Using Stream.listen
-    dbf.getRowsAsync().listen((Row r) {
-        print(r.toString());
+    dbf.getRowsAsync().listen((Row row) {
+        print(row.toString() + "\n")
     });
 }
 ```
