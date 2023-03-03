@@ -1,3 +1,6 @@
+## 1.0.1
+* Fix issue with null characters.
+
 ## 1.0.0
 * Fixed issue with characters encoding
 * Tested for a long time, so it is a stable release

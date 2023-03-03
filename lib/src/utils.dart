@@ -17,7 +17,7 @@ String lsbHexFromByteArray(Iterable<String> bytes, {int start = 0, int? end}) {
 String mapToAscii(String hex) {
   return Latin1Decoder()
       .convert(RegExp(r".{2}")
-          .allMatches(hex)
+          .allMatches(hex.replaceAll("00", ""))
           .map((m) => intParse(m.group(0).toString()))
           .toList())
       .trim();
