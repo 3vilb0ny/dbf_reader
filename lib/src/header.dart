@@ -54,10 +54,12 @@ class Header {
 
   /// Prints in console the table structure
   void showStructure() {
-    String s = "";
-    for (ColumnStructure cellStructure in _columns) {
-      s += "$cellStructure\n";
-    }
-    print(s);
+    print(_columns.join("\n"));
+  }
+
+  /// Returns a String
+  @override
+  String toString() {
+    return "| ${_columns.map((e) => e.name).join(" | ")} |";
   }
 }

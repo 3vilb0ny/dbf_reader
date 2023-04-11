@@ -1,3 +1,6 @@
+## 1.0.2
+* Add toString method to Header class.
+
 ## 1.0.1
 * Fix issue with null characters.
 

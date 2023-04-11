@@ -19,6 +19,10 @@ void main() {
     dbf.showStructure();
   });
 
+  test('Header ToString', () {
+    expect(dbf.header.toString(), "| MO_CODIGO | TC_FECHA | TC_COTIZ |");
+  });
+
   test('Read first row seccond column', () async {
     expect((await dbf.select()).first.get(1).getString(), isNotNull);
   });
